@@ -101,19 +101,28 @@ timervec:
         sw a1, 0(a0)
         sw a2, 4(a0)
         sw a3, 8(a0)
+        sw a4, 12(a0)
 
         # schedule the next timer interrupt
         # by adding interval to mtimecmp.
         lw a1, 16(a0) # CLINT_MTIMECMP(hart)
         lw a2, 20(a0) # interval
         lw a3, 0(a1)
+        lw a4, 4(a1) # timecmp a4:a3
         add a3, a3, a2
+        sltu a2, a3, a2
+        add a4, a4, a2 # a4:a3 + a2
+
+        li a2, -1
+        sw a2, 0(a1)
+        sw a4, 4(a1)
         sw a3, 0(a1)
 
         # raise a supervisor software interrupt.
-	li a1, 2
+        li a1, 2
         csrw sip, a1
 
+        lw a4, 12(a0)
         lw a3, 8(a0)
         lw a2, 4(a0)
         lw a1, 0(a0)
