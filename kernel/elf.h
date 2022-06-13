@@ -24,12 +24,12 @@ struct elfhdr {
 // Program section header
 struct proghdr {
   uint32 type;
-  // uint32 flags; // not in 32 bit ELF!
   uint32 off;
   uint32 vaddr;
   uint32 paddr;
   uint32 filesz;
   uint32 memsz;
+  uint32 flags;
   uint32 align;
 };
 
